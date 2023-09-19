@@ -3,7 +3,10 @@ from __future__ import annotations
 import ast
 import importlib.metadata
 from importlib.metadata import version
-from typing import Generic, Iterator, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeAlias, TypeVar
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 try:
     __version__ = version("flake8-qt-tr")
