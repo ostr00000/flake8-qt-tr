@@ -3,17 +3,17 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "flake8-tr"
-authors = [{ name = "ostr00000" }]
+name = "flake8-qt-tr"
 description = "Flake8 extension for detecting incorrect QT translation"
+requires-python = ">=3.10"
+version = "0.1.0"
+
+authors = [{ name = "ostr00000" }]
 readme = "README.md"
-requires-python = ">=3.8"
 keywords = ["flake8", "qt", "translation"]
 license = { text = "MIT" }
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-#    "Development Status :: 3 - Alpha",
-#    "Development Status :: 4 - Beta",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Framework :: Flake8",
     "Intended Audience :: Developers",
@@ -21,20 +21,24 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Internationalization",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = ["flake8>=6.0.0"]
-dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ['pytest']
+
+[project.entry-points]
+"flake8.extension" = { TR = "flake8_qt_tr.checker:TrChecker" }
 
 [project.urls]
-Homepage = "https://github.com/ostr00000/flake8-tr"
+Homepage = "https://github.com/ostr00000/flake8-qt-tr"
 
 [tool.ruff]
 select = ["ALL"]

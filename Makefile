@@ -4,3 +4,9 @@ install_pre_commit:
 
 run_pre_commit:
 	pre-commit run --all-files
+
+create_venv:
+	python -m venv env
+
+install_locally:
+	. ./env/bin/activate && pip install .[test]
