@@ -3,7 +3,7 @@ from __future__ import annotations
 import ast
 import importlib.metadata
 from importlib.metadata import version
-from typing import TYPE_CHECKING, Generic, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, TypeAlias
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -14,15 +14,6 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "0.0.0-dev"
 
 FlakeErrorTuple: TypeAlias = tuple[int, int, str, type]
-T = TypeVar("T")
-
-
-class Contain(Generic[T]):
-    def __init__(self, data: list[T]) -> None:
-        self.data = data
-
-    def __eq__(self, other: T) -> bool:
-        return other in self.data
 
 
 class TrChecker:
