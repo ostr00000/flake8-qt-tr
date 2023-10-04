@@ -1,5 +1,7 @@
 # flake8-qt-tr
 
+
+[![PyPI](https://img.shields.io/pypi/v/flake8-qt-tr)](https://pypi.org/project/flake8-qt-tr/)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ostr00000/flake8-qt-tr/main.svg)](https://results.pre-commit.ci/latest/github/ostr00000/flake8-qt-tr/main)
