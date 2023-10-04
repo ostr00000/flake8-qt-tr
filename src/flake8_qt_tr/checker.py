@@ -3,7 +3,7 @@ from __future__ import annotations
 import ast
 import importlib.metadata
 from importlib.metadata import version
-from typing import TYPE_CHECKING, Generic, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, TypeAlias
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -14,15 +14,6 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "0.0.0-dev"
 
 FlakeErrorTuple: TypeAlias = tuple[int, int, str, type]
-T = TypeVar("T")
-
-
-class Contain(Generic[T]):
-    def __init__(self, data: list[T]) -> None:
-        self.data = data
-
-    def __eq__(self, other: T) -> bool:
-        return other in self.data
 
 
 class TrChecker:
@@ -35,25 +26,6 @@ class TrChecker:
 
     def __init__(self, tree: ast.AST) -> None:
         self._tree = tree
-        self._translation_functions = Contain(
-            [
-                # https://doc.qt.io/qt-6/qcoreapplication.html#translate
-                "translate",
-                # https://doc.qt.io/qt-6/qttranslation-proxy.html
-                "QT_TR_NOOP",
-                "QT_TR_N_NOOP",
-                "QT_TRANSLATE_NOOP3",
-                "QT_TRANSLATE_NOOP",
-                "QT_TRANSLATE_N_NOOP3",
-                "QT_TRANSLATE_N_NOOP",
-            ],
-        )
-        self._translation_methods = Contain(
-            [
-                # https://doc.qt.io/qt-6/qobject.html#tr
-                "tr",
-            ],
-        )
 
     def run(self) -> Iterator[FlakeErrorTuple]:
         for node in ast.walk(self._tree):
@@ -61,18 +33,36 @@ class TrChecker:
                 continue
 
             match node:
-                # method call (sourceText, disambiguation=None, n=-1)
                 case ast.Call(
-                    func=ast.Attribute(attr=self._translation_methods),
+                    func=ast.Attribute(attr="tr"),
                     args=[text_node, _, _] | [text_node, _] | [text_node],
                 ):
+                    # method call (sourceText, disambiguation=None, n=-1)
+                    # https://doc.qt.io/qt-6/qobject.html#tr
                     yield from self._gen_error(text_node)
 
-                # function call (context, sourceText, disambiguation=None, n=-1)
                 case ast.Call(
-                    func=ast.Name(id=self._translation_functions),
+                    func=ast.Name(id="translate"),
                     args=[_, text_node, _, _] | [_, text_node, _] | [_, text_node],
                 ):
+                    # function call (context, sourceText, disambiguation=None, n=-1)
+                    # https://doc.qt.io/qt-6/qcoreapplication.html#translate
+                    yield from self._gen_error(text_node)
+
+                case ast.Call(
+                    func=ast.Name(id="QT_TR_NOOP"),
+                    args=[text_node],
+                ):
+                    # function call (sourceText)
+                    # https://doc.qt.io/qt-6/qttranslation-proxy.html#QT_TR_NOOP
+                    yield from self._gen_error(text_node)
+
+                case ast.Call(
+                    func=ast.Name(id="QT_TRANSLATE_NOOP"),
+                    args=[_, text_node],
+                ):
+                    # function call (context, sourceText)
+                    # https://doc.qt.io/qt-6/qttranslation-proxy.html#QT_TRANSLATE_NOOP
                     yield from self._gen_error(text_node)
 
     def _gen_error(self, error_node: ast.AST) -> Iterator[FlakeErrorTuple]:
