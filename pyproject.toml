@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "flake8-qt-tr"
 description = "Flake8 extension for detecting incorrect QT translation"
 requires-python = ">=3.10"
-version = "0.1.0"
+version = "0.2.0"
 
 authors = [{ name = "ostr00000" }]
 readme = "README.md"
@@ -32,7 +32,8 @@ classifiers = [
 dependencies = ["flake8>=6.0.0"]
 
 [project.optional-dependencies]
-test = ['pytest']
+test = ["pytest"]
+all = ["flake8-qt-tr[test]"]
 
 [project.entry-points]
 "flake8.extension" = { TR = "flake8_qt_tr.checker:TrChecker" }
