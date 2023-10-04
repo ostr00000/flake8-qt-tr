@@ -3,7 +3,7 @@ create_venv:
 
 install_pre_commit:
 	. ./env/bin/activate && pip install pre-commit
-	. ./env/bin/activate && pre-commit
+	. ./env/bin/activate && pre-commit install
 
 run_pre_commit:
 	pre-commit run --all-files
@@ -18,4 +18,3 @@ build_and_upload:
 	rm -rf ./dist
 	. ./env/bin/activate && python -m build
 	. ./env/bin/activate && python -m twine upload dist/*
-
