@@ -6,7 +6,7 @@ install_pre_commit:
 	. ./env/bin/activate && pre-commit install
 
 run_pre_commit:
-	pre-commit run --all-files
+	. ./env/bin/activate && python -m pre_commit run --all-files
 
 install_locally:
 	. ./env/bin/activate && pip install .[all]
