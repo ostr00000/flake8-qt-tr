@@ -16,7 +16,7 @@ repos:
   # original repo: https://github.com/crate-ci/typos
   # we use mirror repo, because tags in original repo are broken:
   # https://github.com/crate-ci/typos/issues/390
-    rev: v1.31.0
+    rev: v1.34.0
     hooks:
       - id: typos
 
@@ -28,7 +28,7 @@ repos:
           - --preview
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.4
+    rev: v0.12.2
     hooks:
       - id: ruff
         name: ruff-show-errors
