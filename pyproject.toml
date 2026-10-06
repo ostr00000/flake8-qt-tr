@@ -41,18 +41,18 @@ all = ["flake8-qt-tr[test]"]
 [project.urls]
 Homepage = "https://github.com/ostr00000/flake8-qt-tr"
 
-[tool.ruff]
+[tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "D203", # one-blank-line-before-class
     "D213", # multi-line-summary-second-line
-    "ANN101", # Missing type annotation for `self` in method
-    "D10", # missing codsting
+    "D10", # missing docstring
+    "CPY001", # Missing copyright notice at top of file
 ]
 fixable = ["ALL"]
 unfixable = []
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [# SKIP: we are testing
     "S101", # Use of `assert` detected
     "ARG", # flake8-unused-arguments
